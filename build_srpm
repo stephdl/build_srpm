@@ -1,9 +1,9 @@
-# Create needed dirs on the build box
+###a bit of tests to see if we will not do a mess
     if [[ -z $2 ]]; then
         echo "############################################################################################################"
         echo "you must give arguments on the  git branch (master, sme9 or anything else) : build_srpm package_name master"
         echo "############################################################################################################"
-    exit
+        exit
     fi
 
     if [[ -d ~/git_work/$1 && -d ~/git_work/$1-sdl ]]; then
@@ -15,6 +15,7 @@
         echo "###################################"
         exit
     fi
+# Create needed dirs on the build box
 
     mkdir -p ~/rpmbuild/{RPMS,SRPMS,SPECS,SOURCES,BUILD}
     mkdir -p ~/exchange
@@ -30,12 +31,13 @@
     rm -f $1.bis.spec
 
 
+###test to see if the directory already exists in ~/git_work, if yes we use ~/git_work/package_name-sdl
     if [[ ! -d ~/git_work/$1 ]]; then
 
         gitexist=0
         mkdir -p ~/git_work/$1
         NameGitHub=$1
-        curl -u 'stephdl:xxxxxxxx' https://api.github.com/user/repos -d '{"name": "'"$NameGitHub"'" , "description": "A contrib for SME9", "homepage": "http://wiki.contribs.org", "private": false, "has_issues": true, "has_wiki": true, "has_downloads": true}'
+        curl -u 'stephdl:xxxxxxxxxx' https://api.github.com/user/repos -d '{"name": "'"$NameGitHub"'" , "description": "A RPM for SME Server", "homepage": "http://wiki.contribs.org", "private": false, "has_issues": true, "has_wiki": true, "has_downloads": true}'
 
         cp -R ~/rpmbuild/BUILD/$1*/* ~/git_work/$1
         cp ~/rpmbuild/SPECS/$1.spec ~/git_work/$1
@@ -47,7 +49,7 @@
         gitexist=1
         mkdir -p ~/git_work/$1-sdl
         NameGitHub=$1-sdl
-        curl -u 'stephdl:xxxxxxxxx' https://api.github.com/user/repos -d '{"name": "'"$NameGitHub"'" , "description": "A contrib for SME Server", "homepage": "http://wiki.contribs.org", "private": false, "has_issues": true, "has_wiki": true, "has_downloads": true}'
+        curl -u 'stephdl:xxxxxxxxx' https://api.github.com/user/repos -d '{"name": "'"$NameGitHub"'" , "description": "A RPM for SME Server", "homepage": "http://wiki.contribs.org", "private": false, "has_issues": true, "has_wiki": true, "has_downloads": true}'
 
         cp -R ~/rpmbuild/BUILD/$1*/* ~/git_work/$1-sdl
         cp ~/rpmbuild/SPECS/$1.spec ~/git_work/$1-sdl
@@ -92,7 +94,7 @@
     testapache=$(grep -srni 'AuthType Basic' .)
         if [[ $testapache =~ "AuthType Basic" ]]; then
             echo "$testapache, go to work"
-            echo 'You must add before $OUT .= " AuthBasicProvider external\n";'
+            echo 'Only for SME9, you must add before $OUT .= " AuthBasicProvider external\n";'
             
         else
             echo "no apache authentication"
@@ -106,6 +108,14 @@ myDate=$(date +"%a %b %d %Y")
 
 # a bit of clean
 
-rm -rf ~/rpmbuild/SPECS/* ~/rpmbuild/SOURCES/* ~/rpmbuild/SRPMS/* ~/rpmbuild/BUILD/* 
+    rm -rf ~/rpmbuild/SPECS/* ~/rpmbuild/SOURCES/* ~/rpmbuild/SRPMS/* ~/rpmbuild/BUILD/* 
 
+## say where we record the source code
+    if [[ $gitexist = "0" ]]; then
+        echo ""
+        echo " packages are in ~/git_work/$1"
+    elif [[ $gitexist = "1" ]]; then
+        echo ""
+        echo " packages are in ~/git_work/$1-sdl"
+    fi
 
