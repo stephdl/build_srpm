@@ -101,7 +101,7 @@
         fi
 
 ## help to write the changelog
-myDate=$(date +"%a %b %d %Y")
+myDate=$(LC_ALL=C date +"%a %b %d %Y")
     echo ""
     echo "* $myDate stephane de Labrusse <stephdl@de-labrusse.fr>"
     echo "- Initial release to SME Server"
