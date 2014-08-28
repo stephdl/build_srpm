@@ -1,8 +1,8 @@
 ###a bit of tests to see if we will not do a mess
-    if [[ -z $2 ]]; then
-        echo "############################################################################################################"
-        echo "you must give arguments on the  git branch (master, sme9 or anything else) : build_srpm package_name master"
-        echo "############################################################################################################"
+    if [[ -z $1 || -z $2 ]]; then
+        echo "################################################################################################################################"
+        echo "you must give arguments on the  git branch (master, sme9 or anything else) and the package name : build_srpm package_name master"
+        echo "################################################################################################################################"
         exit
     fi
 
