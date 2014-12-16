@@ -22,7 +22,7 @@
 
     rpm -ivh $1*.src.rpm
     cd ~/rpmbuild/SPECS
-    rpmbuild -bp $1*.spec
+    rpmbuild -bp --nodeps $1*.spec
 
 ##we remove all patch from the spec file
     sed '/Patch/d' $1*.spec > $1.bis.spec
